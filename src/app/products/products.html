@@ -1,0 +1,62 @@
+=<!-- Cart Summary Bar -->
+<div class="cart-bar" *ngIf="cartCount > 0">
+    <span class="cart-bar-icon">🛒</span>
+    <span><strong>{{ cartCount }}</strong> item(s) in cart</span>
+    <span class="cart-bar-divider">|</span>
+    <span>Total: <strong>₱{{ cartTotal.toLocaleString() }}</strong></span>
+  </div>
+  
+  <!-- Products Section -->
+  <section class="products-section">
+    <h2 class="section-title">Our Collection</h2>
+    <p class="section-sub">Handpicked styles for every occasion</p>
+  
+    <!-- Bonus: Category Filter -->
+    <div class="category-filters">
+      <button
+        *ngFor="let cat of categories"
+        class="filter-btn"
+        [class.active]="selectedCategory === cat"
+        (click)="setCategory(cat)">
+        {{ cat }}
+      </button>
+    </div>
+  
+    <!-- Product Grid using *ngFor -->
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let item of filteredProducts">
+  
+        <!-- Product Image / Emoji -->
+        <div class="product-img">
+          <span class="product-emoji">{{ item.emoji }}</span>
+          <span class="product-category-badge">{{ item.category }}</span>
+        </div>
+  
+        <!-- Product Info -->
+        <div class="product-info">
+          <h3 class="product-name">{{ item.name }}</h3>
+          <p class="product-price">₱{{ item.price.toLocaleString() }}</p>
+  
+          <!-- *ngIf: Availability Badge -->
+          <span class="badge available" *ngIf="item.available">✅ Available</span>
+          <span class="badge out-of-stock" *ngIf="!item.available">❌ Out of Stock</span>
+  
+          <!-- Event Binding: Add to Cart -->
+          <button
+            class="add-to-cart-btn"
+            [class.disabled]="!item.available"
+            [disabled]="!item.available"
+            (click)="addToCart(item)">
+            {{ item.available ? 'Add to Cart' : 'Unavailable' }}
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  
+    <!-- Empty state when filter has no results -->
+    <p class="empty-msg" *ngIf="filteredProducts.length === 0">
+      No products found in this category.
+    </p>
+  
+  </section>
